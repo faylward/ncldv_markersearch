@@ -7,11 +7,11 @@ The program assumes protein IDs are provided in the Prodigal format (i.e., conti
 The program requires HMMER3 and the SeqIO package of Biopython. 
 
 
-## USAGE: python ncldv_markersearch.py <directory of protein .faa files> <proximity of genes to merge>
+### USAGE: python ncldv_markersearch.py <directory of protein .faa files> <proximity of genes to merge>
 
 The proximity of genes to merge is the number of genes up- and down-stream of the initial hit that the program will search for additional hits to merge. Hits outside this range will be considered independent hits. 
 
-## Output
+### Output
 ncldv_markersearch.py provides several output files:
 
 full_output.txt         This is the main tab-delimited output file that provides the annotation results. 
