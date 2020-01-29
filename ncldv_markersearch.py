@@ -23,9 +23,9 @@ speci_db = "hmm/NCLDV.hmm" # Please ensure the PATH to the HMM dataset is correc
 cog_set = ["A32", "D5", "SFII", "mcp", "mRNAc", "PolB", "RNAPL", "RNAPS", "RNR", "VLTF3"]
 #cog_set = ["A32", "SFII", "mcp", "PolB", "VLTF3"]
 
-combined_output = open("output.txt", "w")
+combined_output = open("raw_annotatino_output.txt", "w")
 
-merged_proteins = open("marker_set_for_phylogenetics.faa", "w")
+merged_proteins = open("ncldv_markersearch.faa", "w")
 final_proteins = []
 
 marker_tally = defaultdict(int)
