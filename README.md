@@ -6,6 +6,7 @@ This script will search a file of proteins against a set of 10 curated Hidden Ma
 The program assumes protein IDs are provided in the Prodigal format (i.e., contigname_1, contigname_2, etc). 
 The program requires HMMER3 and the SeqIO package of Biopython. 
 
+For questions or comments please contact Frank Aylward at faylward at vt.edu
 
 ### USAGE: python ncldv_markersearch.py <directory of protein .faa files> <proximity of genes to merge>
 
@@ -22,7 +23,4 @@ raw_output.txt          This is the parsed raw HMMER3 output. It can be used as 
 
 cogs.txt                This is a cogs-formatted file that can be used as input for an ETE3 species tree workflow 
 (http://etetoolkit.org/documentation/ete-build/).
-
-
-
 
