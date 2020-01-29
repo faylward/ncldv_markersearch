@@ -13,10 +13,16 @@ The proximity of genes to merge is the number of genes up- and down-stream of th
 
 ## Output
 ncldv_markersearch.py provides several output files:
+
 full_output.txt         This is the main tab-delimited output file that provides the annotation results. 
+
 ncldv_markersearch.faa  This is the protein file with all merged and unmerged proteins with best hits to the HMMs. Proteins are re-named to accommodate potential merged proteins. 
+
 raw_output.txt          This is the parsed raw HMMER3 output. It can be used as a reference for debugging. 
-cogs.txt                This is a cogs-formatted file that can be used as input for an ETE3 species tree workflow (http://etetoolkit.org/documentation/ete-build/).
+
+cogs.txt                This is a cogs-formatted file that can be used as input for an ETE3 species tree workflow 
+(http://etetoolkit.org/documentation/ete-build/).
+
 
 
 
