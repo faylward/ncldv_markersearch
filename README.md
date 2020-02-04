@@ -8,7 +8,7 @@ The program requires HMMER3 and the SeqIO package of Biopython.
 
 For questions or comments please contact Frank Aylward at faylward at vt.edu
 
-### USAGE: python ncldv_markersearch.py <directory of protein .faa files> <proximity of genes to merge>
+### USAGE: python ncldv_markersearch.py <directory of protein .faa files> <proximity of genes to merge> <proximity to search for genes to merge (integer)>
 
 The proximity of genes to merge is the number of genes up- and down-stream of the initial hit that the program will search for additional hits to merge. Hits outside this range will be considered independent hits. 
 
