@@ -49,7 +49,7 @@ for i in os.listdir(outfolder):
 		trimmed = re.sub(".faa", ".trimal.aln", filename)
 		cog = re.sub(".faa", "", i)
 		#print "Aligning and trimming "+ cog +" and adding it to the concatenated alignment"
-		cmd = "clustalo --force -i "+ filename +" -o "+ alignment 
+		cmd = "clustalo --threads 4 --force -i "+ filename +" -o "+ alignment 
 		print cmd
 		cmd2 = shlex.split(cmd)
 		subprocess.call(cmd2, stdout=open("output.txt", "w"), stderr=open("err.txt", "w"))
