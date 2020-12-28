@@ -33,7 +33,7 @@ def hmm_launcher(folder, redo):
 			if redo:
 				pass
 			else:
-				subprocess.call(cmd2, stdout=open("hmm.out", 'w'), stderr=open("error_file.txt", 'a'))
+				subprocess.call(cmd2, stdout=open("log_file.txt", 'w'), stderr=open("log_file.txt", 'a'))
 
 # end
 
@@ -267,7 +267,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 
 	final_proteins = []
 	marker_tally = defaultdict(int)
-	exceptions = open("exceptions.txt", "w")
+	#exceptions = open("exceptions.txt", "w")
 	tally = 0
 	protein_tally = []
 
@@ -477,7 +477,9 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 	df2.fillna(0, inplace=True)
 	df2.to_csv(project+".table.tsv", sep="\t", index_label="genome")
 
-	if concat:
+	if concat and allhits:
+		print("Cannot choose -a and -c flags together! No concatenated alignment produced.")
+	elif concat and not allhits:
 
 		if os.path.isdir(project+"_alignments"):
 			pass
@@ -521,7 +523,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 				cmd = "clustalo --threads "+ cpus +" --force -i "+ filename +" -o "+ alignment 
 				#print(cmd)
 				cmd2 = shlex.split(cmd)
-				subprocess.call(cmd2, stdout=open("output.txt", "w"), stderr=open("err.txt", "w"))
+				subprocess.call(cmd2, stdout=open("log_file.txt", "a"), stderr=open("log_file.txt", "a"))
 
 				seq_dict = SeqIO.to_dict(SeqIO.parse(alignment, "fasta"))
 				values = list(seq_dict.values())
