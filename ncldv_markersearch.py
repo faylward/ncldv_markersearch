@@ -393,7 +393,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 				for item in protein2dups:
 					#print item
 					if item in merged_protein_list:
-						print(item)
+						#print(item)
 						pass
 					
 					elif protein2dups[item] in hitset:
