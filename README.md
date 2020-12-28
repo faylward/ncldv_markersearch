@@ -33,7 +33,7 @@ If this option is specified then all hits marker genes (that are above the prede
 
 
 
-### Output
+### Output files
 ncldv_markersearch.py provides several output files, all with the prefix designated with the -n option:
 
 *full_output.txt         This is the main tab-delimited output file that provides the annotation results. 
@@ -51,4 +51,22 @@ ncldv_markersearch.py provides several output files, all with the prefix designa
 log_file.txt          This is just a log file of some of the outputs produced by hmmsearch and clustal that is used for debugging purposes. 
 
 In addition, for each .faa file in the input folder a .domout and .domout.parsed file is created. These are used if you re-run this tool with the -r flag. 
+
+
+### Examples
+
+To get the best hits to the markers A32,mcp,SFII,PolB,VLTF3, using 4 threads. 
+>python ncldv_markersearch.py -i test_input -n test_run -t 4
+
+To get all hits, including "secondary hits", or second-best hits:
+>python ncldv_markersearch.py -i test_input -n test_run -t 4 -a
+
+To get best hits and also generate a concatenated alignment: 
+>python ncldv_markersearch.py -i test_input -n test_run -t 4 -c
+
+To get best hits and generate an alignment for the markers A32,PolB,VLTF3,RNAPL, and RNAPS:
+>python ncldv_markersearch.py -i test_input -n test_run -t 4 -c -m A32,PolB,VLTF3,RNAPL,RNAPS
+
+
+
 
