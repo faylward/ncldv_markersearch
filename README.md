@@ -4,7 +4,8 @@ NCLDV_Markersearch: A script for identifying phylogenetic marker genes in NCLDV 
 This script will search a file of proteins against a set of 10 curated Hidden Markov Models for protein families prevalent in Nucleo-Cytoplasmic Large DNA Viruses (NCLDV). Proteins that have hits to the same HMM, form non-overlapping alignments with that HMM, and are located within a certain defined proximity on the same contig will be joined together and output as a single amino sequence. This facilitates the phylogenomic analysis of NCLDV that have split genes.  
 
 The program assumes protein IDs are provided in the Prodigal format (i.e., contigname_1, contigname_2, etc). This is needed for sorting the output and ensuring that proteins are joined properly. The simple prodigal launcher script "prodigal_launcher.py" is provided to assist with this. 
-The program requires HMMER3 and the SeqIO package of Biopython. Additinally, if you wish to produce concatenated alignment Clustal Omega is also required (in your PATH). 
+
+The program requires Python >=3.5, HMMER3, and the SeqIO package of Biopython. Additinally, if you wish to produce concatenated alignment Clustal Omega is also required (in your PATH). 
 
 For questions or comments please contact Frank Aylward at faylward at vt.edu
 
