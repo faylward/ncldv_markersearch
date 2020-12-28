@@ -67,6 +67,7 @@ To get best hits and also generate a concatenated alignment:
 To get best hits and generate an alignment for the markers A32,PolB,VLTF3,RNAPL, and RNAPS:
 >python ncldv_markersearch.py -i test_input -n test_run -t 4 -c -m A32,PolB,VLTF3,RNAPL,RNAPS
 
-
+#### Citation
+M Moniruzzaman, CA Martinez-Gutierrez, AR Weinheimer, FO Aylward. Dynamic genome evolution and complex virocell metabolism of globally-distributed giant viruses. Nature Communications, 2020, 11(1): 1-11.
 
 
