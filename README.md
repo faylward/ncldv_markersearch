@@ -8,7 +8,7 @@ The program requires HMMER3 and the SeqIO package of Biopython. Additinally, if 
 
 For questions or comments please contact Frank Aylward at faylward at vt.edu
 
-### MINIMAL USAGE: python ncldv_markersearch.py -i <directory of protein .faa files> -n <name of prefix for output files>
+### MINIMAL USAGE: python ncldv_markersearch.py -i <directory of protein .faa files> -n project_name
 
 ### Options
 
