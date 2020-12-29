@@ -557,7 +557,7 @@ def main(argv=None):
 	args_parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description="NCLDV_Markersearch: A script for identifying phylogenetic marker genes in NCLDV and generating concatenated alignments \nFrank O. Aylward, Virginia Tech Department of Biological Sciences <faylward at vt dot edu>", epilog='*******************************************************************\n\n*******************************************************************')
 	args_parser.add_argument('-i', '--input', required=True, help='Input folder of FASTA file (ending in .fna, .fa, or .fasta)')
 	args_parser.add_argument('-n', '--name', required=True, help='project name prefix for output files')
-	args_parser.add_argument('-p', '--proximity', required=False, default=int(2), help='number of genes to look up- and downstream of hits to join genes (default=10)')
+	args_parser.add_argument('-p', '--proximity', required=False, default=int(5), help='number of genes to look up- and downstream of hits to join genes (default=5)')
 	args_parser.add_argument('-t', '--cpus', required=False, default=str(1), help='number of cpus to use for the HMMER3 search')
 	args_parser.add_argument('-m', '--markerset', required=False, default=str('A32,mcp,SFII,PolB,VLTF3'), help='Markers to use. Must be comma-separated list of the following: A32,D5,SFII,mcp,mRNAc,PolB,RNAPL,RNAPS,RNR,VLTF3. Default is A32,mcp,SFII,PolB,VLTF3')
 	args_parser.add_argument('-r', '--redo', type=bool, default=False, const=True, nargs='?', help='run without re-launching prodigal and HMMER3 (for quickly re-calculating outputs with different parameters if you have already run once)')
@@ -569,7 +569,7 @@ def main(argv=None):
 	# set up object names for input/output/database folders
 	inputdir = args_parser.input
 	project = args_parser.name
-	prox = args_parser.proximity
+	prox = int(args_parser.proximity)
 	cpus = args_parser.cpus
 	#contiglevel = args_parser.contiglevel
 	redo = args_parser.redo
