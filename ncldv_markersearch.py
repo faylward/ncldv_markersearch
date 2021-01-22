@@ -210,15 +210,16 @@ def parse_domout(path_to_parsed_hmmfile, acc, protein_dict, cog_name, protein2du
 				protein2category[protein] = category
 
 	parsed.close()
+	main_hits = set(main_hits)
 	return main_hits, protein2cog, protein2acc, protein2score, protein2length, protein2category, protein2coords, protein2align_length
 
-def get_proteinsonreplicon(proteinid, seqdict, prox):
+def get_proteinsonreplicon(proteinid, record_list, prox):
 	contig_name = re.sub("_\d*$", "", proteinid)
 	final_list = []
 	index = []
 	indexzero=0
 	ind = int(0)
-	record_list = natsorted(seqdict.keys())
+	#record_list = natsorted(seqdict.keys())
 	#print record_list
 	for record in record_list:
 		#print record
@@ -278,15 +279,16 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 
 			markercount = defaultdict(float)
 			protein_file = os.path.join(inputdir, i)
-			gff_file = re.sub(".faa", ".gff", protein_file)
-			domout = re.sub(".faa", ".domout", protein_file)
-			parsed = re.sub(".faa", ".domout.parsed", protein_file)
-			acc = re.sub(".faa", "", i)		
+			gff_file = re.sub(".faa$", ".gff", protein_file)
+			domout = re.sub(".faa$", ".domout", protein_file)
+			parsed = re.sub(".faa$", ".domout.parsed", protein_file)
+			acc = re.sub(".faa$", "", i)		
 			merged_protein_list = []
 
 			# get a dictionary of protein sequences
 			seq_handle = open(protein_file, "r")
 			seq_dict = SeqIO.to_dict(SeqIO.parse(seq_handle, "fasta"))
+			record_list = natsorted(seq_dict.keys())
 			#orf_set = [record.id for record in seq_dict.values()]
 			prot2protlist = defaultdict(list)
 			num_proteins = defaultdict(lambda:int(1))
@@ -294,17 +296,23 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 			prot2locrange = defaultdict(list)
 			# parse domout file and get protein hits and coordinates
 			for cog in cog_set:
+				#print(cog)
 				protein2dups = defaultdict(lambda:"hits")
+
 				main_hits, protein2cog, protein2acc, protein2score, protein2length, protein2category, protein2coords, protein2align_length = parse_domout(parsed, acc, seq_dict, cog, protein2dups)
-				
+
 				for main_hit in main_hits:
+
 					if main_hit in protein_tally:
 						pass
 					else:
 					
 						protein_tally.append(main_hit)
-						orf_set = get_proteinsonreplicon(main_hit, seq_dict, prox)
+						#print("before")
 						
+						orf_set = get_proteinsonreplicon(main_hit, record_list, prox)
+						#print("after")
+						#print(main_hit, cog, len(main_hits), len(orf_set))
 						if main_hit == "NAN":
 							#print(acc, cog, main_hit)
 							pass
@@ -314,7 +322,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 
 							#print(main_hit)
 							prot2protlist[main_hit].append(main_hit)
-
+							#print(len(prot2protlist[main_hit]))
 							id_hit1 = main_hit +"~"+ cog
 							range1 = protein2coords[id_hit1]
 
@@ -327,13 +335,17 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 							prot2loc[main_hit].append(meanloc1)
 
 							orf_set.remove(main_hit)
+
 							for m in protein_tally:
 								if m in orf_set:
 									orf_set.remove(m)
 
+
+							orf_set = set(orf_set)
 							for d in orf_set:
+
 								if protein2cog[d] == cog:
-									#print(main_hit, cog, d)
+
 									id_hit2 = d +"~"+ cog
 									range2 = protein2coords[id_hit2]
 									r2 = range(range2[0], range2[1])
@@ -375,6 +387,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 										#if cog == "PolB":
 										#	print(id_hit1, id_hit2, num_proteins[id_hit1])
 
+
 				all_besthits = [p for p in protein2dups.keys() if protein2dups[p] in ["single_besthit", "main_hit"]] 
 				all_scores = [protein2score[getprot(p)] for p in all_besthits]
 				if len(all_scores) > 0:
@@ -388,7 +401,8 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 			#	print(all_besthits)
 			#	print(all_scores)
 			#	print(max_value, max_index)
-									
+							
+				hit_tally = defaultdict(int)		
 				best_hit_bit = defaultdict(float)
 				for item in protein2dups:
 					#print item
@@ -424,17 +438,20 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 
 						loc_str = ";".join([str(n) for n in sorted_loc_list])
 						acc = protein2acc[protein]
-						final_name = re.sub("_", ".", acc) +"_"+ hit
-
-						merged.write(final_name +"\t"+ protein +"\t"+ acc +"\t"+ hit +"\t"+ str(protein2length[protein]) +"\t"+ str(protein2score[protein]) +"\t"+ str(protein2align_length[item]) +"\t"+ str(num_proteins[item]) +"\t"+ protein2dups[item] +"\t"+ prot_str +"\t"+ range_str +"\n")
+						final_name_str = re.sub("_", ".", acc) +"_"+ hit
+						hit_tally[final_name_str] +=1
+						ptally = str(hit_tally[final_name_str])
+						final_name = final_name_str +".copy"+ptally
 
 						if protein2score[protein] > score_dict[hit]:
+							merged.write(final_name +"\t"+ protein +"\t"+ acc +"\t"+ hit +"\t"+ str(protein2length[protein]) +"\t"+ str(protein2score[protein]) +"\t"+ str(protein2align_length[item]) +"\t"+ str(num_proteins[item]) +"\t"+ protein2dups[item] +"\t"+ prot_str +"\t"+ range_str +"\n")
+
 							markercount[hit] +=1
 							if len(sorted_prot_list) > 1:
 								#print(hit, protein, protlist)
 								tally = tally + len(sorted_prot_list)
 
-								newrecord = SeqRecord(Seq(""), id=final_name, name=protein+" JOINED", description=protein2acc[protein])
+								newrecord = SeqRecord(Seq(""), id=final_name, name=protein+" JOINED", description=protein2acc[protein] +" JOINED_PROTEIN")
 								for fragment in sorted_prot_list:
 									subrecord = seq_dict[fragment]
 									subseq = subrecord.seq
@@ -446,10 +463,12 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 							else:
 								tally +=1
 								record = seq_dict[protein]
+								#print(protein, item, num_proteins[item])
+								#record.description = protein2acc[protein] +" JOINED_PROTEIN" 
 								record.id = final_name
 								final_proteins.append(record)
 
-			s1 = pandas.DataFrame(pandas.Series(markercount, name = i))
+			s1 = pandas.DataFrame(pandas.Series(markercount, name = acc))
 			df = pandas.concat([df, s1], axis=1, sort=True)
 								
 	names = [i.id for i in final_proteins]
