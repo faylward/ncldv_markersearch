@@ -8,11 +8,22 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 #from Bio.Alphabet import IUPAC
 
-speci_db = "hmm/NCLDV.hmm" # Please ensure the PATH to the HMM dataset is correct
+speci_db = "hmm/gvogs.common.hmm" # Please ensure the PATH to the HMM dataset is correct
 #cog_set = ["A32", "D5", "SFII", "mcp", "mRNAc", "PolB", "RNAPL", "RNAPS", "RNR", "VLTF3"]
 #cog_set = ["A32", "SFII","mcp", "PolB", "VLTF3"]
+#gvogset = ["GVOGm0054", "GVOGm0020", "GVOGm0003", "GVOGm0013", "GVOGm0022", "GVOGm0760", "GVOGm0023", "GVOGm0239", "GVOGm0890", "GVOGm0461", "GVOGm0095", "GVOGm0172", "GVOGm0088", "GVOGm0056", "GVOGm0018", "GVOGm0214", "GVOGm1574", "GVOGm0048", "GVOGm0129", "GVOGm0787", "GVOGm0036", "GVOGm0004", "GVOGm0152", "GVOGm0028", "GVOGm0160", "GVOGm0263", "GVOGm0115", "GVOGm0031", "GVOGm0189", "GVOGm0083", "GVOGm0694", "GVOGm0001", "GVOGm0041", "GVOGm0798", "GVOGm0027"]
+#gvogset = ["GVOGm0890", "GVOGm0760", "GVOGm0461", "GVOGm0172", "GVOGm0054", "GVOGm0023", "GVOGm0013"]
+score_dict = {"GVOGm0890":float(50), "GVOGm0760":float(80), "GVOGm0461":float(500), "GVOGm0172":float(80), "GVOGm0054":float(300), "GVOGm0023":float(550), "GVOGm0022":float(550), "GVOGm0013":float(160), "GVOGm0003":float(130)}
 
-score_dict = {"A32":float(80), "D5":float(80), "SFII":float(100), "mcp":float(80), "mRNAc":float(80), "PolB":float(150), "RNAPL":float(200), "RNAPS":float(200), "RNR":float(80), "VLTF3":float(80)}
+
+#score_dict = {"A32":float(80), "D5":float(80), "SFII":float(100), "mcp":float(80), "mRNAc":float(80), "PolB":float(150), "RNAPL":float(200), "RNAPS":float(200), "RNR":float(80), "VLTF3":float(80)}
+#score_dict = defaultdict(lambda:float(20))
+#score_dict = {}
+gvog_file = open("gvog_scores.list", "r")
+for i in gvog_file:
+	line = i.rstrip()
+	tabs = line.split("\t")
+	score_dict[tabs[0]] = float(tabs[1])
 
 #################################################################
 ############# define hmm launcher function ######################
@@ -84,8 +95,8 @@ def hmm_parser(folder, suffix, combined_output):
 					newline = re.sub( '\s+', '\t', line)
 					list1 = newline.split('\t')
 					ids = list1[0]
-					hit = list1[3]
-					#print start, end
+					hit = re.sub("_", "", list1[3])
+					#print(hit)
 
 					score = float(list1[7])
 					domain_evalue = float(list1[11])
@@ -166,7 +177,7 @@ def parse_domout(path_to_parsed_hmmfile, acc, protein_dict, cog_name, protein2du
 		line = n.rstrip()
 		tabs = line.split("\t")
 		protein = tabs[0]
-		annot = tabs[2]
+		annot = tabs[2].rstrip(".trim")
 		if annot == cog_name:
 			rnap_hits.append(protein)
 			id_hit = protein +"~"+ annot
@@ -255,7 +266,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 	raw_output = open(project+".rawout.txt", "w")
 
 	cog_set = markerset.split(",")
-	
+	#cog_set = gvogset
 	
 	if allhits:
 		hitset = ['single_besthit', 'main_hit', 'secondary_hit']
@@ -300,9 +311,10 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 				protein2dups = defaultdict(lambda:"hits")
 
 				main_hits, protein2cog, protein2acc, protein2score, protein2length, protein2category, protein2coords, protein2align_length = parse_domout(parsed, acc, seq_dict, cog, protein2dups)
-
+				#print(main_hits)
+				
 				for main_hit in main_hits:
-
+					
 					if main_hit in protein_tally:
 						pass
 					else:
@@ -442,7 +454,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 						hit_tally[final_name_str] +=1
 						ptally = str(hit_tally[final_name_str])
 						final_name = final_name_str +".copy"+ptally
-
+						print(final_name)
 						if protein2score[protein] > score_dict[hit]:
 							merged.write(final_name +"\t"+ protein +"\t"+ acc +"\t"+ hit +"\t"+ str(protein2length[protein]) +"\t"+ str(protein2score[protein]) +"\t"+ str(protein2align_length[item]) +"\t"+ str(num_proteins[item]) +"\t"+ protein2dups[item] +"\t"+ prot_str +"\t"+ range_str +"\n")
 
@@ -513,7 +525,8 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 			line = i.rstrip()
 			tabs = line.split("\t")
 
-			for j in tabs:	
+			for j in tabs:
+				#print(j)
 				underscore = j.split("_")
 				cog = underscore[1]
 				taxon = underscore[0]
@@ -578,7 +591,7 @@ def main(argv=None):
 	args_parser.add_argument('-n', '--name', required=True, help='project name prefix for output files')
 	args_parser.add_argument('-p', '--proximity', required=False, default=int(5), help='number of genes to look up- and downstream of hits to join genes (default=5)')
 	args_parser.add_argument('-t', '--cpus', required=False, default=str(1), help='number of cpus to use for the HMMER3 search')
-	args_parser.add_argument('-m', '--markerset', required=False, default=str('A32,mcp,SFII,PolB,VLTF3'), help='Markers to use. Must be comma-separated list of the following: A32,D5,SFII,mcp,mRNAc,PolB,RNAPL,RNAPS,RNR,VLTF3. Default is A32,mcp,SFII,PolB,VLTF3')
+	args_parser.add_argument('-m', '--markerset', required=False, default=str('GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013'), help='Markers to use. Must be comma-separated list of the following: GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013,GVOGm0022,GVOGm0003. Default is GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013')
 	args_parser.add_argument('-r', '--redo', type=bool, default=False, const=True, nargs='?', help='run without re-launching prodigal and HMMER3 (for quickly re-calculating outputs with different parameters if you have already run once)')
 	args_parser.add_argument('-c', '--concat', type=bool, default=False, const=True, nargs='?', help='In addition to finding marker genes, generated a concatenated alignment of the best hits (not compatible with the -a option)')
 	args_parser.add_argument('-a', '--allhits', type=bool, default=False, const=True, nargs='?', help='Provide all hits (default is to provide only best hits to each marker gene)')
