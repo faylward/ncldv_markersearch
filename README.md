@@ -20,7 +20,7 @@ The proximity of genes to merge is the number of genes up- and down-stream of th
 How many CPUs/threads to use for the hmmsearch and clustal steps
 
 **-m, --markerset**
-Markers to use. Must be comma-separated list of the following: GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013,GVOGm0022,GVOGm0003. The default is GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013.
+Markers to use. Must be comma-separated list of some combination of the following 9 markers: GVOGm0890, GVOGm0760, GVOGm0461, GVOGm0172, GVOGm0054, GVOGm0023, GVOGm0013, GVOGm0022, GVOGm0003. The default is GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013.
 
 **-r, --redo**
 If you have already run script and you want to re-run it with different parameters, you can use the -r flag to avoid re-running HMMER (this saves a bit of time if you're running multiple times)
@@ -69,7 +69,7 @@ In addition, for each .faa file in the input folder a .domout and .domout.parsed
 
 ### Examples
 
-To get the best hits to the markers A32,mcp,SFII,PolB,VLTF3, using 4 threads. 
+To get the best hits to the default marker set using 4 threads. 
 >python ncldv_markersearch.py -i test_input -n test_run -t 4
 
 To get all hits, including "secondary hits", or second-best hits:
@@ -78,8 +78,8 @@ To get all hits, including "secondary hits", or second-best hits:
 To get best hits and also generate a concatenated alignment: 
 >python ncldv_markersearch.py -i test_input -n test_run -t 4 -c
 
-To get best hits and generate an alignment for the markers A32,PolB,VLTF3,RNAPL, and RNAPS:
->python ncldv_markersearch.py -i test_input -n test_run -t 4 -c -m A32,PolB,VLTF3,RNAPL,RNAPS
+To get best hits and generate an alignment using only the markers PolB and TopoII:
+>python ncldv_markersearch.py -i test_input -n test_run -t 4 -c -m GVOGm0461,GVOGm0054
 
 #### Citation
 M Moniruzzaman, CA Martinez-Gutierrez, AR Weinheimer, FO Aylward. Dynamic genome evolution and complex virocell metabolism of globally-distributed giant viruses. Nature Communications, 2020, 11(1): 1-11.
