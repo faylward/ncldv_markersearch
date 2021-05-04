@@ -31,9 +31,13 @@ If this option is specified the script will also output a concatenated alignment
 **-a, --allhits**
 If this option is specified then all hits marker genes (that are above the predefined bit score thresholds) will be output. This option is not compatible with the -c option. This can be useful if you want to see if certain marker genes are present in multiple copies. 
 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
 
 **COG Descriptions
-GVOGm0003	MCP	NCLDV major capsid protein
+GVOGm0003	MCP	NCLDV major capsid protein <br/>
 GVOGm0013	SFII	DEAD/SNF2-like helicase
 GVOGm0022	RNAPS	DNA-directed RNA polymerase small subunit
 GVOGm0023	RNAPL	DNA-directed RNA polymerase large subunit
