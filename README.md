@@ -1,5 +1,5 @@
 # ncldv_markersearch
-NCLDV_Markersearch: A script for identifying phylogenetic marker genes in NCLDV and generating concatenated alignments.
+ncldv_markersearch: A tool for identifying phylogenetic marker genes in Nucleocytoviricota and generating concatenated alignments.
 
 This script will search a file of proteins against a set of 10 curated Hidden Markov Models for protein families prevalent in Nucleo-Cytoplasmic Large DNA Viruses (NCLDV). Proteins that have hits to the same HMM, form non-overlapping alignments with that HMM, and are located within a certain defined proximity on the same contig will be joined together and output as a single amino sequence. This facilitates the phylogenomic analysis of NCLDV that have split genes.  
 
