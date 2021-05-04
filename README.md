@@ -20,7 +20,7 @@ The proximity of genes to merge is the number of genes up- and down-stream of th
 How many CPUs/threads to use for the hmmsearch and clustal steps
 
 **-m, --markerset**
-Markers to use. Must be comma-separated list of the following: A32,D5,SFII,mcp,mRNAc,PolB,RNAPL,RNAPS,RNR,VLTF3. The default is A32,mcp,SFII,PolB,VLTF3.
+Markers to use. Must be comma-separated list of the following: GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013,GVOGm0022,GVOGm0003. The default is GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013.
 
 **-r, --redo**
 If you have already run script and you want to re-run it with different parameters, you can use the -r flag to avoid re-running HMMER (this saves a bit of time if you're running multiple times)
@@ -32,6 +32,16 @@ If this option is specified the script will also output a concatenated alignment
 If this option is specified then all hits marker genes (that are above the predefined bit score thresholds) will be output. This option is not compatible with the -c option. This can be useful if you want to see if certain marker genes are present in multiple copies. 
 
 
+**COG Descriptions
+GVOGm0003	MCP	NCLDV major capsid protein
+GVOGm0013	SFII	DEAD/SNF2-like helicase
+GVOGm0022	RNAPS	DNA-directed RNA polymerase small subunit
+GVOGm0023	RNAPL	DNA-directed RNA polymerase large subunit
+GVOGm0054	PolB	DNA polymerase family B
+GVOGm0172	TFIIB	Transcription initiation factor IIB
+GVOGm0461	TopoII	DNA topoisomerase II
+GVOGm0760	A32	Packaging ATPase
+GVOGm0890	VLTF3	Poxvirus Late Transcription Factor VLTF3
 
 ### Output files
 ncldv_markersearch.py provides several output files, all with the prefix designated with the -n option:
