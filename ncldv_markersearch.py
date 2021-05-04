@@ -19,11 +19,11 @@ score_dict = {"GVOGm0890":float(50), "GVOGm0760":float(80), "GVOGm0461":float(50
 #score_dict = {"A32":float(80), "D5":float(80), "SFII":float(100), "mcp":float(80), "mRNAc":float(80), "PolB":float(150), "RNAPL":float(200), "RNAPS":float(200), "RNR":float(80), "VLTF3":float(80)}
 #score_dict = defaultdict(lambda:float(20))
 #score_dict = {}
-gvog_file = open("gvog_scores.list", "r")
-for i in gvog_file:
-	line = i.rstrip()
-	tabs = line.split("\t")
-	score_dict[tabs[0]] = float(tabs[1])
+#gvog_file = open("gvog_scores.list", "r")
+#for i in gvog_file:
+#	line = i.rstrip()
+#	tabs = line.split("\t")
+#	score_dict[tabs[0]] = float(tabs[1])
 
 #################################################################
 ############# define hmm launcher function ######################
