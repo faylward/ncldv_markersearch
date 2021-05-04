@@ -31,22 +31,24 @@ If this option is specified the script will also output a concatenated alignment
 **-a, --allhits**
 If this option is specified then all hits marker genes (that are above the predefined bit score thresholds) will be output. This option is not compatible with the -c option. This can be useful if you want to see if certain marker genes are present in multiple copies. 
 
-| First Header  | Second Header |
+| GVOG  | Name  | Description
 | ------------- | ------------- |
 | Content Cell  | Content Cell  |
 | Content Cell  | Content Cell  |
 
 **COG Descriptions
-GVOGm0003	MCP	NCLDV major capsid protein <br/>
-GVOGm0013	SFII	DEAD/SNF2-like helicase
-GVOGm0022	RNAPS	DNA-directed RNA polymerase small subunit
-GVOGm0023	RNAPL	DNA-directed RNA polymerase large subunit
-GVOGm0054	PolB	DNA polymerase family B
-GVOGm0172	TFIIB	Transcription initiation factor IIB
-GVOGm0461	TopoII	DNA topoisomerase II
-GVOGm0760	A32	Packaging ATPase
-GVOGm0890	VLTF3	Poxvirus Late Transcription Factor VLTF3
-
+|GVOG       |Name   | Descriptions                              |
+|-----------|-------|-------------------------------------------|
+|GVOGm0003  |	MCP   |	NCLDV major capsid protein                |
+|GVOGm0013	| SFII  |	DEAD/SNF2-like helicase                   |
+|GVOGm0022	| RNAPS |DNA-directed RNA polymerase beta subunit   |
+|GVOGm0023	| RNAPL	|DNA-directed RNA polymerase alpha subunit  |
+|GVOGm0054	| PolB	|DNA polymerase family B                    |
+|GVOGm0172	| TFIIB	|Transcription initiation factor IIB        |
+|GVOGm0461	| TopoII|DNA topoisomerase II                       |
+|GVOGm0760	| A32	  |Packaging ATPase                           |
+|GVOGm0890	| VLTF3	|Poxvirus Late Transcription Factor VLTF3   |
+ 
 ### Output files
 ncldv_markersearch.py provides several output files, all with the prefix designated with the -n option:
 
