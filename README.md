@@ -31,12 +31,10 @@ If this option is specified the script will also output a concatenated alignment
 **-a, --allhits**
 If this option is specified then all hits marker genes (that are above the predefined bit score thresholds) will be output. This option is not compatible with the -c option. This can be useful if you want to see if certain marker genes are present in multiple copies. 
 
-| GVOG  | Name  | Description
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
 
-**COG Descriptions
+
+### Marker Descriptions
+
 |GVOG       |Name   | Descriptions                              |
 |-----------|-------|-------------------------------------------|
 |GVOGm0003  |	MCP   |	NCLDV major capsid protein                |
