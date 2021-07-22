@@ -183,11 +183,11 @@ def parse_domout(path_to_parsed_hmmfile, acc, protein_dict, cog_name, protein2du
 			id_hit = protein +"~"+ annot
 			hmm_score = float(tabs[5])
 			category = tabs[6]
+			start = int(tabs[3])
+			end =   int(tabs[4])
+			align_length = abs(end - start)
 
-			if hmm_score > 20:
-
-				start = int(tabs[3])
-				end =   int(tabs[4])
+			if hmm_score > 20 and align_length > 20:
 
 				record = protein_dict[protein]
 				prot_length = len(record.seq)
@@ -204,7 +204,6 @@ def parse_domout(path_to_parsed_hmmfile, acc, protein_dict, cog_name, protein2du
 				#if annot == "PolB":
 				#	print(start, end, id_hit)
 
-				align_length = abs(end - start)
 				protein2align_length[id_hit] = align_length
 
 				if category == "BH" and annot == cog_name:
@@ -221,7 +220,9 @@ def parse_domout(path_to_parsed_hmmfile, acc, protein_dict, cog_name, protein2du
 				protein2category[protein] = category
 
 	parsed.close()
-	main_hits = set(main_hits)
+	#main_hits = set(main_hits)
+	#main_hits2 = []
+	#main_hits2 = [main_hits2.append(x) for x in main_hits if x not in main_hits2]
 	return main_hits, protein2cog, protein2acc, protein2score, protein2length, protein2category, protein2coords, protein2align_length
 
 def get_proteinsonreplicon(proteinid, record_list, prox):
@@ -260,7 +261,7 @@ def get_proteinsonreplicon(proteinid, record_list, prox):
 def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat):
 
 	merged = open(project+".full_output.txt", "w")
-	merged.write("New_protein_name\tseed_hit\tgenome\thit\tprotein_length\tbit_score\talignment_length\tnum_proteins_merged\thit_type\tprotein_ids\thmm_aln_coords\n")
+	merged.write("New_protein_name\tgenome\thit\tprotein_length\tbit_score\tnum_proteins_merged\thit_type\tprotein_ids\thmm_aln_coords\n")
 	cog_out = open(project+".cogs.txt", "w")
 	merged_proteins = open(project+".faa", "w")
 	raw_output = open(project+".rawout.txt", "w")
@@ -311,7 +312,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 				protein2dups = defaultdict(lambda:"hits")
 
 				main_hits, protein2cog, protein2acc, protein2score, protein2length, protein2category, protein2coords, protein2align_length = parse_domout(parsed, acc, seq_dict, cog, protein2dups)
-				#print(main_hits)
+				#print(cog, main_hits)
 				
 				for main_hit in main_hits:
 					
@@ -370,9 +371,12 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 									set1 = set(r1)
 									inter = set1.intersection(r2)
 
-									if int(len(inter)) > 50:
+									#print(d, inter)
+									#print(id_hit1, id_hit2, r1, r2, range1, range2, len(inter))
+
+									if int(len(inter)) > 10:
 										protein2dups[id_hit2] = "secondary_hit"
-										#print(id_hit1, id_hit2, r1, r2, range1, range2)
+										#print(id_hit1, id_hit2, r1, r2, range1, range2, len(inter))
 									else:
 										protein_tally.append(d)
 										
@@ -385,9 +389,11 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 										minrange = min(range1 + range2)
 										maxrange = max(range1 + range2)
 										protein2coords[id_hit1] = [minrange, maxrange]
+										#print(minrange, maxrange)
 										prot2locrange[main_hit].append(locrange2)
 									
-										protein2align_length[id_hit1] = abs(maxrange - minrange)
+										#protein2align_length[id_hit1] = abs(maxrange - minrange)
+										#protein2align_length[main_hit] = int(protein2align_length[main_hit]) + int(protein2align_length[d])
 										protein2length[main_hit] = int(protein2length[main_hit]) + int(protein2length[d])
 										protein2score[main_hit] = float(protein2score[main_hit]) + float(protein2score[d])
 										prot2protlist[main_hit].append(d)
@@ -454,9 +460,11 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 						hit_tally[final_name_str] +=1
 						ptally = str(hit_tally[final_name_str])
 						final_name = final_name_str +".copy"+ptally
-						print(final_name)
+						#print(final_name)
 						if protein2score[protein] > score_dict[hit]:
-							merged.write(final_name +"\t"+ protein +"\t"+ acc +"\t"+ hit +"\t"+ str(protein2length[protein]) +"\t"+ str(protein2score[protein]) +"\t"+ str(protein2align_length[item]) +"\t"+ str(num_proteins[item]) +"\t"+ protein2dups[item] +"\t"+ prot_str +"\t"+ range_str +"\n")
+							#merged.write(final_name +"\t"+ acc +"\t"+ hit +"\t"+ str(protein2length[protein]) +"\t"+ str(protein2score[protein]) +"\t"+ str(protein2align_length[item]) +"\t"+ str(num_proteins[item]) +"\t"+ protein2dups[item] +"\t"+ prot_str +"\t"+ range_str +"\n")
+							merged.write(final_name +"\t"+ acc +"\t"+ hit +"\t"+ str(protein2length[protein]) +"\t"+ str(round(protein2score[protein], 1)) +"\t"+ str(num_proteins[item]) +"\t"+ protein2dups[item] +"\t"+ prot_str +"\t"+ range_str +"\n")
+
 
 							markercount[hit] +=1
 							if len(sorted_prot_list) > 1:
