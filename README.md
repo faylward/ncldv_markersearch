@@ -83,7 +83,7 @@ To get best hits and generate an alignment using only the markers PolB and TopoI
 
  ### Download reference genomes
  If you wish to download a set of reference genomes for giant viruses, you can do so with:
-> wget -O ncldv_smallset.tar.gz https://zenodo.org/record/6475699/files/ncldv_smallset.tar.gz?download=1
+> wget -O ncldv_smallset.tar.gz https://zenodo.org/record/6475989/files/ncldv_smallset.tar.gz?download=1
  
  And then unpack with:
  
