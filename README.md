@@ -81,6 +81,16 @@ To get best hits and also generate a concatenated alignment:
 To get best hits and generate an alignment using only the markers PolB and TopoII:
 >python ncldv_markersearch.py -i test_input -n test_run -t 4 -c -m GVOGm0461,GVOGm0054
 
+ ### Download reference genomes
+ If you wish to download a set of reference genomes for giant viruses, you can do so with:
+> wget -O ncldv_smallset.tar.gz https://zenodo.org/record/6475699/files/ncldv_smallset.tar.gz?download=1
+ 
+ And then unpack with:
+ 
+ > tar xvfz ncldv_smallset.tar.gz
+ 
+ This folder will contain a set of reference genomes (ncldv_proteinpreds) as well as some iTOL datasets that may be useful for changing the leaf names (converting from nonredundant ID to common name) and displaying a color strip with the order-level taxonomic affiliation. The datasets contain more names than are present in the dataset, so error messages arising from that can be ignored. 
+ 
 #### Citation
 M Moniruzzaman, CA Martinez-Gutierrez, AR Weinheimer, FO Aylward. Dynamic genome evolution and complex virocell metabolism of globally-distributed giant viruses. Nature Communications, 2020, 11(1): 1-11.
 
