@@ -258,7 +258,7 @@ def get_proteinsonreplicon(proteinid, record_list, prox):
 
 
 # main function that runs the program
-def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat):
+def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat, galigner):
 
 	merged = open(project+".full_output.txt", "w")
 	merged.write("New_protein_name\tgenome\thit\tprotein_length\tbit_score\tnum_proteins_merged\thit_type\tprotein_ids\thmm_aln_coords\n")
@@ -551,7 +551,7 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 		taxon_set = set(taxon_list)
 		#print taxon_set
 
-		print("Generating alignments with Clustal Omega...")
+		print("Generating multi-sequence alignments...")
 		align_dict = defaultdict(list)
 		full_dict = {}
 		for i in os.listdir(project+"_alignments"):
@@ -560,7 +560,11 @@ def run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
 				alignment = re.sub(".faa", ".aln", filename)
 				cog = re.sub(".faa", "", i)
 				#print "Aligning and trimming "+ cog +" and adding it to the concatenated alignment"
-				cmd = "clustalo --threads "+ cpus +" --force -i "+ filename +" -o "+ alignment 
+
+				if galigner == "muscle":
+					cmd = "muscle -threads "+ cpus +" -super5 "+ filename +" -output "+ alignment 
+				else:
+					cmd = "clustalo --threads "+ cpus +" --force -i "+ filename +" -o "+ alignment 
 				#print(cmd)
 				cmd2 = shlex.split(cmd)
 				subprocess.call(cmd2, stdout=open("log_file.txt", "a"), stderr=open("log_file.txt", "a"))
@@ -602,6 +606,7 @@ def main(argv=None):
 	args_parser.add_argument('-m', '--markerset', required=False, default=str('GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013'), help='Markers to use. Must be comma-separated list of the following: GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013,GVOGm0022,GVOGm0003. Default is GVOGm0890,GVOGm0760,GVOGm0461,GVOGm0172,GVOGm0054,GVOGm0023,GVOGm0013')
 	args_parser.add_argument('-r', '--redo', type=bool, default=False, const=True, nargs='?', help='run without re-launching prodigal and HMMER3 (for quickly re-calculating outputs with different parameters if you have already run once)')
 	args_parser.add_argument('-c', '--concat', type=bool, default=False, const=True, nargs='?', help='In addition to finding marker genes, generated a concatenated alignment of the best hits (not compatible with the -a option)')
+	args_parser.add_argument('-g', '--galigner', required=False, default="clustalo", help='whether to use muscle or clustal omega for alignment - options are clustalo (default) or muscle')
 	args_parser.add_argument('-a', '--allhits', type=bool, default=False, const=True, nargs='?', help='Provide all hits (default is to provide only best hits to each marker gene)')
 	args_parser.add_argument('-v', '--version', action='version', version='ncldv_markersearch v. 1.1')
 	args_parser = args_parser.parse_args()
@@ -616,8 +621,9 @@ def main(argv=None):
 	allhits = args_parser.allhits
 	markerset = args_parser.markerset
 	concat = args_parser.concat
+	galigner = args_parser.galigner
 	
-	run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat)
+	run_program(inputdir, project, prox, cpus, redo, allhits, markerset, concat, galigner)
 	return 0
 
 if __name__ == '__main__':
