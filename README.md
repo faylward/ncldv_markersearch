@@ -31,6 +31,8 @@ If this option is specified the script will also output a concatenated alignment
 **-a, --allhits**
 If this option is specified then all hits marker genes (that are above the predefined bit score thresholds) will be output. This option is not compatible with the -c option. This can be useful if you want to see if certain marker genes are present in multiple copies. 
 
+**-g, --galigner [new feature added in Feb 2024]**
+This option lets you choose the alignment program used for MSAs. The default is clustal omega, but you can now choose Muscle5 instead if you wish. Muscle5 may substantially improve MSAs used for phylogenetics (see paper https://www.nature.com/articles/s41467-022-34630-w). For this, please make sure Muscle5 is in your PATH and can be called with "muscle". See install instructons on the website: https://www.drive5.com/muscle/. 
 
 
 ### Marker Descriptions
